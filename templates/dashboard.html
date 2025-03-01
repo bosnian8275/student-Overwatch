@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #e3f2fd; /* Light blue background */
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #ffffff;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .table th {
+            background-color: #4C7BF3;
+            color: white;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .ranking-card {
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .ranking-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #4C7BF3;
+            color: white;
+            border: none;
+            border-radius: 15px 15px 0 0;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 15px 15px 0 0;
+            color: #4C7BF3;
+        }
+        .nav-tabs .nav-link:hover {
+            background-color: #4C7BF3;
+            color: white;
+        }
+        .form-select {
+            border-radius: 15px;
+            padding: 10px;
+            border: 1px solid #4C7BF3;
+        }
+        .form-select:focus {
+            border-color: #4C7BF3;
+            box-shadow: 0 0 0 0.2rem rgba(76, 123, 243, 0.25);
+        }
+        h2 {
+            color: #4C7BF3;
+            font-weight: bold;
+        }
+        h5 {
+            color: #4C7BF3;
+            font-weight: bold;
+        }
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn-primary {
+            background-color: #4C7BF3;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #3a5bb1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Student Performance Dashboard</h2>
+        
+        <!-- Tabs for Sections -->
+        <ul class="nav nav-tabs" id="dashboardTabs">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#practice">Practice</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#assignments">Assignments</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#exam">Exam</a></li>
+        </ul>
+        
+        <div class="tab-content mt-3">
+            <!-- Practice Section -->
+            <div id="practice" class="tab-pane fade show active">
+                <label for="classSelect">Select Class:</label>
+                <select id="classSelect" class="form-select mb-3">
+                    <option value="Class A" {% if selected_class == 'Class A' %}selected{% endif %}>Class A</option>
+                    <option value="Class B" {% if selected_class == 'Class B' %}selected{% endif %}>Class B</option>
+                    <option value="Class C" {% if selected_class == 'Class C' %}selected{% endif %}>Class C</option>
+                    <option value="Class D" {% if selected_class == 'Class D' %}selected{% endif %}>Class D</option>
+                </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <h5 class="text-center">Attempts Per Experiment</h5>
+                            <canvas id="attemptsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <h5 class="text-center">Ranking by Failures</h5>
+                            <canvas id="rankingChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Assignments Section -->
+            <div id="assignments" class="tab-pane fade">
+                <label for="classSelectAssignments">Select Class:</label>
+                <select id="classSelectAssignments" class="form-select mb-3">
+                    <option value="Class A" {% if selected_class == 'Class A' %}selected{% endif %}>Class A</option>
+                    <option value="Class B" {% if selected_class == 'Class B' %}selected{% endif %}>Class B</option>
+                    <option value="Class C" {% if selected_class == 'Class C' %}selected{% endif %}>Class C</option>
+                    <option value="Class D" {% if selected_class == 'Class D' %}selected{% endif %}>Class D</option>
+                </select>
+                <div class="card">
+                    <h5 class="text-center">Assignments Data</h5>
+                    <table class="table table-bordered table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Assignment</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in assignments %}
+                            <tr>
+                                <td>{{ assignment["Student"] }}</td>
+                                <td>{{ assignment["Assignment"] }}</td>
+                                <td>{{ assignment["Score"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Exam Section -->
+            <div id="exam" class="tab-pane fade">
+                <label for="classSelectExam">Select Class:</label>
+                <select id="classSelectExam" class="form-select mb-3">
+                    <option value="Class A" {% if selected_class == 'Class A' %}selected{% endif %}>Class A</option>
+                    <option value="Class B" {% if selected_class == 'Class B' %}selected{% endif %}>Class B</option>
+                    <option value="Class C" {% if selected_class == 'Class C' %}selected{% endif %}>Class C</option>
+                    <option value="Class D" {% if selected_class == 'Class D' %}selected{% endif %}>Class D</option>
+                </select>
+                <div class="card">
+                    <h5 class="text-center">Time Spent on OLabs</h5>
+                    <canvas id="examChart"></canvas>
+                </div>
+                <div class="card mt-4">
+                    <h5 class="text-center">Warns and Blocks</h5>
+                    <table class="table table-bordered table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Warns</th>
+                                <th>Blocks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in warns_blocks_data %}
+                            <tr>
+                                <td>{{ student["Student"] }}</td>
+                                <td>{{ student["warns"] }}</td>
+                                <td>{{ student["blocks"] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Student Performance Ranking Table -->
+        <div class="mt-4 ranking-card">
+            <h3 class="text-center">Student Performance Rankings</h3>
+            <table class="table table-bordered table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Student</th>
+                        <th>Total Attempts</th>
+                        <th>Failures</th>
+                        <th>Success Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in rankings %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ student["Student"] }}</td>
+                        <td>{{ student["total_attempts"] }}</td>
+                        <td>{{ student["failures"] }}</td>
+                        <td>{{ student["success_rate"] }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        var attemptsData = {{ attempts_data | default({}, true) | tojson }};
+        var rankingData = {{ ranking_data | default({}, true) | tojson }};
+        var examData = {{ exam_data | default({}, true) | tojson }};
+        
+        var ctx1 = document.getElementById('attemptsChart').getContext('2d');
+        var attemptsChart = new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: attemptsData.labels || [],
+                datasets: [{
+                    label: 'Attempts',
+                    data: attemptsData.values || [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById('rankingChart').getContext('2d');
+        var rankingChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: rankingData.labels || [],
+                datasets: [{
+                    label: 'Failures',
+                    data: rankingData.values || [],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        var ctx3 = document.getElementById('examChart').getContext('2d');
+        var examChart = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: examData.labels || [],
+                datasets: [{
+                    label: 'Time Spent (Seconds)',
+                    data: examData.values || [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        document.getElementById('classSelect').addEventListener('change', function() {
+            var selectedClass = this.value;
+            window.location.href = "/?class=" + encodeURIComponent(selectedClass);
+        });
+
+        document.getElementById('classSelectAssignments').addEventListener('change', function() {
+            var selectedClass = this.value;
+            window.location.href = "/?class=" + encodeURIComponent(selectedClass);
+        });
+
+        document.getElementById('classSelectExam').addEventListener('change', function() {
+            var selectedClass = this.value;
+            window.location.href = "/?class=" + encodeURIComponent(selectedClass);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let hash = window.location.hash;
+            if (hash) {
+                let activeTab = document.querySelector(`a[href="${hash}"]`);
+                if (activeTab) {
+                    new bootstrap.Tab(activeTab).show();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

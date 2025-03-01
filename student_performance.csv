@@ -1,0 +1,25 @@
+Class,Student,SuccessRate,ExamSubject,ExamScore,id,username,timespent,warns,search_out,blocks
+Class A,Aarav,50,English,87,id-qxrfoae31f,aarav_kumar,28,2,2,0
+Class A,amitesh,100,Science,61,id-7kg4s9hv5em,amitesh,54,7,51,3
+Class A,Vihaan,50,Math,77,id-qxrfoae33h,vihaan_gupta,40,0,0,0
+Class B,Aditi,33.33,Science,100,id-qxrfoae34i,aditi_verma,50,3,3,2
+Class B,Arjun,50,Math,87,id-qxrfoae35j,arjun_singh,60,2,2,1
+Class B,Diya,66.67,Math,90,id-qxrfoae36k,diya_patel,45,1,1,0
+Class C,Ishaan,100,Science,82,id-qxrfoae37l,ishaan_jain,55,4,4,3
+Class C,Kavya,75,Science,71,id-qxrfoae38m,kavya_rao,30,0,0,0
+Class C,Krishna,20,English,79,id-qxrfoae39n,krishna_mehta,35,1,1,1
+Class D,Meera,80,English,80,id-qxrfoae40o,meera_iyer,50,3,3,2
+Class D,Neha,100,Science,73,id-qxrfoae41p,neha_reddy,45,1,1,0
+Class D,Rohan,100,Science,100,id-qxrfoae42q,rohan_das,60,2,2,1
+Class A,Saanvi,50,Science,70,id-qxrfoae43r,saanvi_mishra,55,4,4,3
+Class A,Samarth,50,English,85,id-qxrfoae44s,samarth_agarwal,30,0,0,0
+Class A,Shreya,16.67,Science,63,id-qxrfoae45t,shreya_nair,35,1,1,1
+Class B,Tanvi,50,Math,70,id-qxrfoae46u,tanvi_saxena,45,1,1,0
+Class B,Varun,50,English,97,id-qxrfoae47v,varun_kapoor,55,4,4,3
+Class B,Yash,66.67,English,65,id-qxrfoae48w,yash_bhatt,30,0,0,0
+Class C,Aryan,50,English,70,id-qxrfoae49x,aryan_joshi,28,2,2,0
+Class C,Anika,100,Math,71,id-qxrfoae50y,anika_singh,35,1,1,1
+Class C,Dev,50,English,71,id-qxrfoae51z,dev_sharma,40,0,0,0
+Class D,Kiara,100,Science,61,id-qxrfoae52a,kiara_patel,50,3,3,2
+Class D,Reyansh,50,Math,82,id-qxrfoae53b,reyansh_gupta,60,2,2,1
+Class D,Anvi,33.33,English,69,id-qxrfoae54c,anvi_verma,45,1,1,0
