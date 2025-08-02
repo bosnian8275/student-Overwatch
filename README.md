@@ -7,6 +7,7 @@ Student Analytics and Monitoring Through chrome extension data collection and gr
  - [x] sending the data reliably to the server
  - [x] student data representation
  - [x] stable server with most errors handled to avoid downtime
+ - [x] students focus improvement with constant website checks 
  - [ ] user data separation for every assignment
  - [ ] changes in curriculum based on student performance
  - [ ] parent portal for  student report
